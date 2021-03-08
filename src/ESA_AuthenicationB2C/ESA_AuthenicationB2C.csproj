@@ -1,0 +1,22 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+    <UserSecretsId>aspnet-ESA_AuthenicationB2C-CAD9AB93-8292-4034-B2BB-2A565A00AE18</UserSecretsId>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="5.0.2" NoWarn="NU1605" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.OpenIdConnect" Version="5.0.2" NoWarn="NU1605" />
+    <PackageReference Include="Microsoft.Graph.Auth" Version="1.0.0-preview.6" />
+    <PackageReference Include="Microsoft.Identity.Web" Version="1.6.0" />
+    <PackageReference Include="Microsoft.Identity.Web.MicrosoftGraph" Version="1.6.0" />
+    <PackageReference Include="Microsoft.Identity.Web.UI" Version="1.6.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Include="..\ESA_AuthenicationB2CApi\Models\TodoItem.cs" Link="Models\TodoItem.cs" />
+  </ItemGroup>
+
+
+</Project>

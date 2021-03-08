@@ -1,0 +1,47 @@
+@using System.Security.Claims
+@model IEnumerable<Microsoft.Graph.User>
+
+@{
+    ViewData["Title"] = "Claims";
+}
+<h1>@ViewData["Title"]</h1>
+
+<p>User Claims:</p>
+
+<table class="table-hover table-condensed table-striped">
+<tr>
+    <th>Claim Type</th>
+    <th>Claim Value</th>
+</tr>
+
+@foreach (Claim claim in User.Claims)
+{
+    <tr>
+        <td>@claim.Type</td>
+        <td>@claim.Value</td>
+    </tr>
+}
+</table>
+
+@* <table class="table-hover table-condensed table-striped">
+<tr>
+    <th>Name</th>
+    <th>Type</th>
+    <th>Sign-In Name</th>
+</tr>
+
+@foreach (Microsoft.Graph.User user in @Model)
+{
+    <tr><td>Display Name</td><td>@user.DisplayName</td></tr>
+    <tr><td>Signin Type</td><td>@user.Identities.FirstOrDefault().SignInType</td></tr>
+    <tr><td>UserId</td><td>@user.Identities.FirstOrDefault().IssuerAssignedId</td></tr>
+    @if (@user.AdditionalData != null)
+    @foreach (var keyValue in @user.AdditionalData)
+    {
+        <tr>
+            <td>@keyValue.Key</td>
+            <td>@keyValue.Value</td>
+        </tr>
+    }
+}
+</table>   *@

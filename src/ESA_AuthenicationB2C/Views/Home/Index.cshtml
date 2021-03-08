@@ -1,0 +1,48 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div>
+    <h1 class="display-4">Welcome</h1>
+</div>
+@if (!User.Identity.IsAuthenticated)
+{
+<div class="card-deck">
+    <div class="card border-dark mb-3">
+        <div class="card-img-container">
+            <img class="card-img" src="./images/parent_portal_login.png" alt="Parent Guardian Login">
+        </div>
+        <div class="card-body">
+            <h5 class="card-title">Parent Login</h5>
+            <p class="card-text">Manage your child's eductional needs.</p>
+        </div>
+        <div class="card-footer text-center">
+        <a href="javascript:alert('Parent/Guardian Sign-In');" class="btn btn-primary btn-sm">Parent/Guardian Sign-In</a>
+        </div>
+    </div>
+    <div class="card border-dark mb-3">
+        <div class="card-img-container">
+            <img class="card-img" src="./images/provider_portal_login.png" alt="Provider Login">
+        </div>
+        <div class="card-body">
+            <h5 class="card-title">Provider Login</h5>
+            <p class="card-text">Manage your services. If you are not currently a provider you can easily sign up by clicking on the "Sign Up Now" link on the provider login page.</p>
+        </div>
+        <div class="card-footer text-center">
+            <a href="javascript:alert('Provider Sign-In');" class="btn btn-primary btn-sm">Provider Sign-In</a>
+        </div>
+    </div>
+    <div class="card border-dark mb-3">
+        <div class="card-img-container">
+            <img class="card-img" src="./images/sufs_portal_login.png" alt="Employee Login">
+        </div>
+        <div class="card-body">
+            <h5 class="card-title">Company Login</h5>
+            <p class="card-text">Login into the portal using your employee login.</p>
+        </div>
+        <div class="card-footer text-center">
+            <a class="btn btn-primary btn-sm" asp-area="MicrosoftIdentity" asp-controller="Account" asp-action="SignIn">Employee Sign-In</a>
+        </div>
+    </div>
+</div>
+}

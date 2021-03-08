@@ -1,0 +1,5 @@
+{
+    "appService.preDeployTask": "publish-release",
+    "appService.deploySubpath": "bin\\Release\\net5.0\\publish",
+    "appService.defaultWebAppToDeploy": "/subscriptions/de961405-20d6-4858-a5b0-6b9c8531f3fc/resourceGroups/sufs-sandbox/providers/Microsoft.Web/sites/esaauthb2c"
+}
