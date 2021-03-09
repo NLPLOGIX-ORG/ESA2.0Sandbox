@@ -64,4 +64,4 @@ If you used the Web API registration above, you should see access_as_user; selec
 8.	Select Add permissions to complete the process.
 After adding permissions to your API, you should see the selected permissions under Configured permissions.  For the permissions you added, if you see “Not granted for…” then an Admin (could be yourself) will need to “Grant admin consent for …”. 
  
-
+    ![Alt Text](ReadmeFiles/AADB2C_ProtectedWebApi_Configuration.png)
