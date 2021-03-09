@@ -10,9 +10,9 @@
     - Enter a Name for your application, for example ESA Authentication Web UI. Users of your app might see this name, and you can change it later.
     - Choose the supported account types for your application. In this case, we need local user accounts and organizational directory (Azure AD) so select “Accounts in any identity provider or organizational directory (for authenticating users with user flows)”.
     - For Redirect URI, add the type of application and the URI destination that will accept returned token responses after successful authentication. 
-      - For local development, select Web and type in https://localhost:{VSConfiguredPort#}/signin-oidc.
-      - For Azure deployed application, select Web and type in (https://{SiteName}.azurewebsites.net/signin-oidc).
-      - For testing and viewing token, select Web and type in https://jwt.ms.  NOTE: This is used outside of the application. You can run the policy and select this endpoint to just see the token value (claims).
+    - For local development, select Web and type in https://localhost:{VSConfiguredPort#}/signin-oidc.
+    - For Azure deployed application, select Web and type in (https://{SiteName}.azurewebsites.net/signin-oidc).
+    - For testing and viewing token, select Web and type in https://jwt.ms.  NOTE: This is used outside of the application. You can run the policy and select this endpoint to just see the token value (claims).
     - For Permissions, make sure “Grant admin consent to openid and offline_access permissions” is checked
     - Select Register.
 6.	Under Manage, select Authentication and then add the following information:
@@ -41,11 +41,11 @@
 6.	Under Manage, select Expose an API > Add a scope
     - If prompted, accept the proposed application ID URI (https://{tenantDomain}/{applicationId}) by selecting Save and Continue.
     - Specify the following:
-      - Enter scope name (ex. access_as_user)
-      - Enter Admin consent display name (ex. Access service as a user.)
-      - Enter Admin consent description (ex. Accesses the web API as a user.)
-      - Keep the State value set to Enabled
-      - Select Add scope
+    - Enter scope name (ex. access_as_user)
+    - Enter Admin consent display name (ex. Access service as a user.)
+    - Enter Admin consent description (ex. Accesses the web API as a user.)
+    - Keep the State value set to Enabled
+    - Select Add scope
 
 ## Azure AD B2C: Add Permissions to Web UI App Registration to Access Your Web API App Registration
 ***Prerequisite:***
