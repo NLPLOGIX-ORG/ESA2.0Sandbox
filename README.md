@@ -132,7 +132,7 @@ dotnet new webapi -au IndividualB2C --aad-b2c-instance "{B2C_Instance}" -ssp "{B
 The following modifications need to be made in order to run the application.
 
 ### Project File: {WebApiName}.csproj
-Make sure the package references are using the latest stable versions (as of 3/15/2021)
+	Make sure the package references are using the latest stable versions (as of 3/15/2021)
 	<ItemGroup>
 		<PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="5.0.3" NoWarn="NU1605" />
 		<PackageReference Include="Microsoft.AspNetCore.Authentication.OpenIdConnect" Version="5.0.3" NoWarn="NU1605" />
