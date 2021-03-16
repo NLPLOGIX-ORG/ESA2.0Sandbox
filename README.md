@@ -65,3 +65,89 @@ If you used the Web API registration above, you should see access_as_user; selec
 After adding permissions to your API, you should see the selected permissions under Configured permissions.  For the permissions you added, if you see “Not granted for…” then an Admin (could be yourself) will need to “Grant admin consent for …”. 
  
     ![Alt Text](ReadmeFiles/AADB2C_ProtectedWebApi_Configuration.png)
+
+## Create Web UI Project using the mvc template to connect to Azure AD B2C and downstream APIs
+
+***Prerequisite:***
+- It's recommended to have .NET 5 framework installed
+
+dotnet new mvc -au IndividualB2C --aad-b2c-instance "{B2C_Instance}" -ssp "{B2C_SignUpSignInPolicy}" -S "/signout/{B2C_SignUpSignInPolicy}" -rp "{B2C_PasswordResetPolicy}" -ep "{B2C_ProfileEditPolicy}" --client-id "{B2C_ApplicationId_RegisteredWebApp}" --domain "{Qualified_B2C_Domain}" --callback-path "/signin-oidc" --called-api-url "{ApiUrl}" --called-api-scopes "{ApiScopes}" -o "{WebAppName}"
+
+The following modifications need to be made in order to run the application.
+
+### Project File: {WebAppName}.csproj
+	Make sure the package references are using the latest stable versions (as of 3/15/2021)
+	<ItemGroup>
+		<PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="5.0.3" NoWarn="NU1605" />
+		<PackageReference Include="Microsoft.AspNetCore.Authentication.OpenIdConnect" Version="5.0.3" NoWarn="NU1605" />
+		<PackageReference Include="Microsoft.Identity.Web" Version="1.8.0" />
+		<PackageReference Include="Microsoft.Identity.Web.UI" Version="1.8.0" />
+	</ItemGroup>
+
+### App Configuration File: appsettings.json
+	Update "ClientSecret" with the secret value created in the App Registerstration for {B2C_ApplicationId_RegisteredWebApp}
+
+### Startup.cs
+	You will need to ensure this is added: using Microsoft.AspNetCore.Mvc.Authorization;
+	
+	In the method, ConfigureServices, the templated code needs to be replaced with the following:
+	
+	var initialScopes = Configuration.GetValue<string>("DownstreamApi:Scopes")?.Split(' ');
+
+	services.AddMicrosoftIdentityWebAppAuthentication(Configuration, "AzureAdB2C")
+        .EnableTokenAcquisitionToCallDownstreamApi(initialScopes)
+	    .AddDownstreamWebApi("DownstreamApi", Configuration.GetSection("DownstreamApi"))
+	    .AddInMemoryTokenCaches();
+
+	services.AddControllersWithViews(options =>
+	{
+        var policy = new AuthorizationPolicyBuilder()
+            .RequireAuthenticatedUser()
+            .Build();
+        options.Filters.Add(new AuthorizeFilter(policy));
+	}).AddMicrosoftIdentityUI();
+
+	services.AddRazorPages();
+	
+### HomeController.cs
+In method, Index(), change the line
+
+    using var response = await _downstreamWebApi.CallWebApiForUserAsync("DownstreamApi").ConfigureAwait(false);
+    
+**To**
+
+    using var response = await _downstreamWebApi.CallWebApiForUserAsync("DownstreamApi", options =>
+    {
+        options.HttpMethod = HttpMethod.Get;
+        options.RelativePath = "weatherforecast"; // Since we are using the sample Api
+    }).ConfigureAwait(false);
+
+## Create Web Api Project using the webapi template to connect to Azure AD B2C and validate scope access
+
+***Prerequisite:***
+- It's recommended to have .NET 5 framework installed
+
+dotnet new webapi -au IndividualB2C --aad-b2c-instance "{B2C_Instance}" -ssp "{B2C_SignUpSignInPolicy}" --client-id "{B2C_ApplicationId_RegisteredWebApi}" --domain "{Qualified_B2C_Domain}" -o "{WebApiName}"
+
+The following modifications need to be made in order to run the application.
+
+### Project File: {WebApiName}.csproj
+Make sure the package references are using the latest stable versions (as of 3/15/2021)
+	<ItemGroup>
+		<PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="5.0.3" NoWarn="NU1605" />
+		<PackageReference Include="Microsoft.AspNetCore.Authentication.OpenIdConnect" Version="5.0.3" NoWarn="NU1605" />
+		<PackageReference Include="Microsoft.Identity.Web" Version="1.8.0" />
+	</ItemGroup>
+	
+### Properties: adjust application port settings, if applicable
+* launchSettings.json - adjust applicationUrl for your development; this should match to the value {ApiUrl} (for development purposes)
+
+### Configuration File: appsettings.json
+* Add "Scopes" key to "AzureAdB2C"
+    "Scopes": "access_as_user" // Should match to the scopes configured in the Web App {ApiScopes}
+
+### WeatherForecast Controller: /Controllers/WeatherForecastController.cs
+* Replace using Microsoft.Identity.Web.Resource with Microsoft.Identity.Web
+* Under [Authorize] add [AuthorizeForScopes(ScopeKeySection = "AzureAdB2C:Scopes")] 
+* Remove line static readonly string[] scopeRequiredByApi = new string[] { "access_as_user" };
+* Remove line HttpContext.VerifyUserHasAnyAcceptedScope(scopeRequiredByApi);
